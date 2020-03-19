@@ -8,3 +8,4 @@ abstract class XmlNodeVisitor {
     abstract void beginNode(String nodeName, String nodeValue, Set<Map.Entry<String, String>> attributes);
     abstract void endNode();
 }
+

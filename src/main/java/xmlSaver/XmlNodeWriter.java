@@ -42,15 +42,15 @@ class XmlNodeWriter extends XmlNodeVisitor {
     @Override
     void beginNode(String nodeName, Set<Map.Entry<String, String>> attributes) {
         var sub = String.format(
-                "%s<%s%s>",
-                this.indentationString.repeat(this.depth),
-                nodeName,
-                computeAttributesString(attributes)
+            "%s<%s%s>",
+            this.indentationString.repeat(this.depth),
+            nodeName,
+            computeAttributesString(attributes)
         );
         var conclusion = String.format(
-                "%s</%s>",
-                this.indentationString.repeat(this.depth),
-                nodeName
+            "%s</%s>",
+            this.indentationString.repeat(this.depth),
+            nodeName
         );
         this.conclusions.push(conclusion);
         this.pw.println(sub);
@@ -62,19 +62,19 @@ class XmlNodeWriter extends XmlNodeVisitor {
         String sub;
         if (nodeValue == null || nodeValue.isEmpty()) {
             sub = String.format(
-                    "%s<%s%s/>",
-                    this.indentationString.repeat(this.depth),
-                    nodeName,
-                    computeAttributesString(attributes)
+                "%s<%s%s/>",
+                this.indentationString.repeat(this.depth),
+                nodeName,
+                computeAttributesString(attributes)
             );
         } else {
             sub = String.format(
-                    "%s<%s%s>%s</%s>",
-                    this.indentationString.repeat(this.depth),
-                    nodeName,
-                    computeAttributesString(attributes),
-                    nodeValue,
-                    nodeName
+                "%s<%s%s>%s</%s>",
+                this.indentationString.repeat(this.depth),
+                nodeName,
+                computeAttributesString(attributes),
+                nodeValue,
+                nodeName
             );
         }
         this.conclusions.push("");
@@ -97,8 +97,8 @@ class XmlNodeWriter extends XmlNodeVisitor {
         }
         return attributes.stream().reduce(
             "",
-             (x, y) -> x + String.format(" %s=\"%s\"", y.getKey(), y.getValue()),
-             (x, y) -> x + y
+            (x, y) -> x + String.format(" %s=\"%s\"", y.getKey(), y.getValue()),
+            (x, y) -> x + y
         );
     }
 }

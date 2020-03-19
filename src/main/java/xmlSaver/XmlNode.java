@@ -1,8 +1,9 @@
 package xmlSaver;
 
+import xmlSaver.XmlNodeVisitor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 class XmlNode {
     private final String nodeName;
@@ -19,15 +20,6 @@ class XmlNode {
         parentChild.appendChild(this);
     }
 
-    @SafeVarargs
-    XmlNode(String nodeName, XmlNode parentChild, Map.Entry<String, String>... attributes) {
-        this.nodeName = nodeName;
-        for (Map.Entry<String, String> attribute : attributes) {
-            this.appendAttribute(attribute.getKey(), attribute.getValue());
-        }
-        parentChild.appendChild(this);
-    }
-
     XmlNode(String nodeName, String nodeValue) {
         this.nodeName = nodeName;
         this.nodeValue = nodeValue;
@@ -35,15 +27,15 @@ class XmlNode {
 
     XmlNode getChildNode(String nodeName) {
         return childNodes.stream().
-                filter(x -> x.nodeName.equals(nodeName)).
-                findFirst().
-                orElseThrow();
+            filter(x -> x.nodeName.equals(nodeName)).
+            findFirst().
+            orElseThrow();
     }
 
     XmlNode[] getChildNodes(@SuppressWarnings("SameParameterValue") String nodeName) {
         return childNodes.stream().
-                filter(x -> x.nodeName.equals(nodeName)).
-                toArray(XmlNode[]::new);
+            filter(x -> x.nodeName.equals(nodeName)).
+            toArray(XmlNode[]::new);
     }
 
     String getAttribute(@SuppressWarnings("SameParameterValue") String attrName) {
