@@ -4,6 +4,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -219,15 +220,17 @@ public class XmlDeserializer {
         try {
             var oldAccessibleState = field.canAccess(target);
             var oldModifiers = field.getModifiers();
-            var modifiers = Field.class.getDeclaredField("modifiers");
+            var lookup = MethodHandles.privateLookupIn(Field.class, MethodHandles.lookup());
+            var modifiers = lookup.findVarHandle(Field.class, "modifiers", int.class);
+            //var modifiers = Field.class.getDeclaredField("modifiers");
 
-            modifiers.setAccessible(true);
-            modifiers.setInt(field, oldModifiers & ~Modifier.FINAL);
+            //modifiers.setAccessible(true);
+            modifiers.set(field, oldModifiers & ~Modifier.FINAL);
             field.setAccessible(true);
             field.set(target, value);
             field.setAccessible(oldAccessibleState);
-            modifiers.setInt(field, oldModifiers);
-            modifiers.setAccessible(false);
+            modifiers.set(field, oldModifiers);
+            //modifiers.setAccessible(false);
         } catch (Exception e) {
             throw new IllegalStateException("wtf");
         }
