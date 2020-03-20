@@ -151,7 +151,12 @@ public class XmlSerializer {
         return this.trackingObjects.
             entrySet().
             stream().
-            filter(x -> object.getClass().getAnnotation(XML.class).isStrict() ? x.getKey() == object : x.getKey().equals(object)).
+            filter(
+                    x -> object.getClass().getAnnotation(XML.class) == null ||
+                            object.getClass().getAnnotation(XML.class).isStrict() ?
+                            x.getKey() == object :
+                            x.getKey().equals(object)
+            ).
             map(Map.Entry::getValue).
             findAny().
             orElse(null);
